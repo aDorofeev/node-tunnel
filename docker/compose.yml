@@ -12,9 +12,9 @@ services:
         depends_on:
             - data
         ports:
-            - ${N_T_SERVER_PORT}
-            - ${N_T_SERVER_PORTS_FROM}
-            - ${N_T_SERVER_PORTS_TO}
+            - "${N_T_SERVER_PORT}:${N_T_SERVER_PORT}"
+            - "${N_T_SERVER_PORTS_FROM}:${N_T_SERVER_PORTS_FROM}"
+            - "${N_T_SERVER_PORTS_TO}:${N_T_SERVER_PORTS_TO}"
         networks:
             default:
                 aliases:
@@ -28,7 +28,7 @@ services:
         depends_on:
             - data
         ports:
-            - ${N_T_CLIENT_PORT}
+            - "${N_T_CLIENT_PORT}:${N_T_CLIENT_PORT}"
         networks:
             default:
                 aliases:
