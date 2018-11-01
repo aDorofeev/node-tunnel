@@ -7,14 +7,14 @@ services:
         volumes:
             - ..:/var/www/symfony:rw
         command: bash -c "true; chown -R 1000:33 /var/www/symfony; sleep 5"
+
     server:
         image: adorofeev/php-fpm-nodejs
         depends_on:
             - data
         ports:
             - "${N_T_SERVER_PORT}:${N_T_SERVER_PORT}"
-            - "${N_T_SERVER_PORTS_FROM}:${N_T_SERVER_PORTS_FROM}"
-            - "${N_T_SERVER_PORTS_TO}:${N_T_SERVER_PORTS_TO}"
+            - "${N_T_SERVER_PORTS_FROM}-${N_T_SERVER_PORTS_TO}:${N_T_SERVER_PORTS_FROM}-${N_T_SERVER_PORTS_TO}"
         networks:
             default:
                 aliases:
@@ -22,17 +22,3 @@ services:
         volumes:
             - ..:/var/www/symfony:rw
         command: ["node", "server"]
-
-    client:
-        image: adorofeev/php-fpm-nodejs
-        depends_on:
-            - data
-        ports:
-            - "${N_T_CLIENT_PORT}:${N_T_CLIENT_PORT}"
-        networks:
-            default:
-                aliases:
-                    - client.compose
-        volumes:
-            - ..:/var/www/symfony:rw
-        command: ["node", "client"]

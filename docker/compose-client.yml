@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+    # data container is a workaround for docker issue: https://github.com/docker/docker/issues/2259
+    data:
+        image: bitnami/minideb:jessie
+        volumes:
+            - ..:/var/www/symfony:rw
+        command: bash -c "true; chown -R 1000:33 /var/www/symfony; sleep 5"
+
+    # docker-compose -f docker/compose-client.yml run --rm -T --publish 12453:9999 -e N_T_CLIENT_NAME=test_agent1 client
+    client:
+        image: adorofeev/php-fpm-nodejs
+        depends_on:
+            - data
+        environment:
+#            - "N_T_CLIENT_PORT:${N_T_CLIENT_PORT}"
+            N_T_CLIENT_PORT: 9999
+        networks:
+            default:
+                aliases:
+                    - client.compose
+        volumes:
+            - ..:/var/www/symfony:rw
+        command: ["node", "client"]

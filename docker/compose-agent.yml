@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+    # data container is a workaround for docker issue: https://github.com/docker/docker/issues/2259
+    data:
+        image: bitnami/minideb:jessie
+        volumes:
+            - ..:/var/www/symfony:rw
+        command: bash -c "true; chown -R 1000:33 /var/www/symfony; sleep 5"
+
+    # docker-compose -f docker/compose-agent.yml run --rm -T -e N_T_AGENT_NAME=test_agent1 agent
+    agent:
+        image: adorofeev/php-fpm-nodejs
+        depends_on:
+            - data
+        networks:
+            default:
+                aliases:
+                    - agent.compose
+            nginx-proxy: ~
+        volumes:
+            - ..:/var/www/symfony:rw
+        command: ["node", "agent"]
+
+networks:
+    nginx-proxy:
+        external: true
