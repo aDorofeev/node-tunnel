@@ -9,6 +9,7 @@ services:
         command: bash -c "true; chown -R 1000:33 /var/www/symfony; sleep 5"
 
     server:
+        restart: "unless-stopped"
         image: adorofeev/php-fpm-nodejs
         depends_on:
             - data
