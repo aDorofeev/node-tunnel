@@ -13,6 +13,7 @@ if (clientName.length > 128) {
 const serverHost = process.env.N_T_SERVER_HOST || 'localhost'
 const serverPort = parseInt(process.env.N_T_SERVER_PORT) || 1337
 const localPort = parseInt(process.env.N_T_CLIENT_PORT) || 8000
+const localHost = process.env.N_T_CLIENT_HOST || 'localhost'
 
 let connectionToServerLost = false
 let localConnections = []
@@ -73,7 +74,7 @@ let localServer = net.createServer({ pauseOnConnect: true }, localSocket => {
     }
   })
 })
-localServer.listen(localPort)
+localServer.listen(localPort, localHost)
 localServer.on('listening', listener => log.info(`Client listening on port ${localPort}. Connecting to server...`))
 localServer.on('error', err => {
   log.info('Something went wrong with client server. Stopping...\n', err.name || err.code, err.message)
